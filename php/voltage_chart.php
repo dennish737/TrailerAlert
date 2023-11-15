@@ -34,12 +34,10 @@ let vehicleName = getVehicleName(vehicle);
 </script>
 
 <body>
-
 <script>
-var hdr = '<h1> ' + vehicleName + ' Voltate for past 72 hours </h1>';
+var hdr = '<h1> ' + vehicleName + ' Voltage for past 72 hours </h1>';
 document.write(hdr);
 </script>
-
 
 <div id="myPlot" style="width:100%;max-width:700px"></div>
 
@@ -47,8 +45,6 @@ document.write(hdr);
 <p id="demo"></p>
 
 <script>
-
-
 
 var xValues = [];
 var yValues = [];
@@ -86,7 +82,7 @@ xmlhttp.onload = function() {
   Plotly.newPlot("myPlot", data, layout);
 
 };
-xmlhttp.open("GET", "src/vehiclevoltage.php?vehicle=" + vehicle, true);
+xmlhttp.open("GET", "src/volt_temp_data.php?vehicle=" + vehicle, true);
 xmlhttp.send();
 
 </script>

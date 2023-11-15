@@ -1,6 +1,7 @@
 <!-- PHP code to establish connection with the localserver -->
 <?php
 
+header("refresh: 60");
 function getDistanceBetweenPointsNew($latitude1, $longitude1, $latitude2, $longitude2, $unit = 'miles') {
   $theta = $longitude1 - $longitude2;
   $distance = (sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) 
@@ -15,6 +16,18 @@ function getDistanceBetweenPointsNew($latitude1, $longitude1, $latitude2, $longi
       $distance = $distance * 1.609344;
   }
   return (round($distance,2));
+}
+
+function getColor($alarms, $alerts) {
+	$color_value = 0;
+	if ( $alarms > 0 ){
+			$color_value = 2;
+	}
+	elseif ($alerts > 0) {
+			$color_value = 1;
+	}
+
+	return $color_value;
 }
 
 // Username is wa7dem
@@ -45,22 +58,31 @@ $sql = " WITH chan_readings (v_id, last_reading, voltage, temp) AS (
         ON b.v_id = a.v_id AND a.last_reading = b.last_reading
         WHERE a.c_id=1 AND b.c_id=2
 
-),
+), 
    location_data AS (
                 SELECT l.v_id, l.last_reading, l.locator, l.loc, cr.voltage, cr.temp
                 FROM locations l
                 LEFT JOIN chan_readings cr
                 ON cr.v_id = l.v_id AND cr.last_reading = l.last_reading
                 WHERE l.last_reading in (SELECT max(last_reading) FROM locations GROUP by v_id)
+), 				
+	alarms_alerts AS (
+		SELECT v_id, SUM(CASE WHEN severity = 'ALERT' THEN 1 ELSE 0 END) as 'alerts',
+				SUM(CASE WHEN severity = 'ALARM' THEN 1 ELSE 0 END) as 'alarms'
+		FROM status_queue 
+		WHERE cleared = 0 AND acknowledged = 0 
+		GROUP BY v_id
 )
-SELECT dl.v_id, v.name, v.status, dl.last_reading, ABS(TIMESTAMPDIFF(MINUTE, UTC_TIME(), dl.last_reading)) as t_diff,
-				dl.locator, dl.loc, v.base,
-                round(ST_DISTANCE_SPHERE(v.base_loc, dl.loc),3) as distance,
-                dl.voltage, dl.temp
+SELECT dl.v_id, v.name, v.status, dl.last_reading, ABS(TIMESTAMPDIFF(MINUTE, UTC_TIME(), dl.last_reading)) as t_diff, 
+			dl.locator, dl.loc, v.base,
+            round(ST_DISTANCE_SPHERE(v.base_loc, dl.loc),3) as distance, 
+            dl.voltage, dl.temp, IFNULL(alm.alarms, 0) as alarms, IFNULL(alm.alerts, 0) as alerts
         FROM location_data dl
         INNER JOIN vehicles v
         ON dl.v_id = v.id
-        ORDER BY v.name; ";
+		LEFT JOIN alarms_alerts alm
+		ON alm.v_id = v.id
+        ORDER BY v.name;";
 $result = $mysqli->query($sql);
 $mysqli->close();
 ?>
@@ -74,6 +96,9 @@ $mysqli->close();
     <title>MITRU Information</title>
     <!-- CSS FOR STYLING THE PAGE -->
     <style>
+		.checked-0{color:green;}
+		.checked-1{color:yellow;}
+		.checked-2{color:red;}
         table {
             margin: 0 auto;
             font-size: large;
@@ -115,14 +140,16 @@ $mysqli->close();
             <tr>
                 <th>Name</th>
                                 <th>State</th>
-                <th>Last Update</th>
-                                <th>dt from Last)</th>
+                <th>Last Update ( UTC )</th>
+                <th>dt from Last)</th>
                 <th>Locator</th>
                 <th>Base Location</th>
-                                <th>Distance From Base (m)</th>
-                                <th>Battery Voltage</th>
-                                <th>Temperature</th>
-                                <th>Status</th>
+                <th>Distance From Base (m)</th>
+                <th>Battery Voltage</th>
+                <th>Temperature</th>
+				<th>Alarms</th>
+				<th>Alerts</th>
+                <th>Charts</th>
             </tr>
             <!-- PHP CODE TO FETCH DATA FROM ROWS -->
             <?php
@@ -130,7 +157,10 @@ $mysqli->close();
                 // LOOP TILL END OF DATA
                 while($rows=$result->fetch_assoc())
                 {
-                $bname = 'button'.$rows['v_id']
+                $bname = 'button'.$rows['v_id'];
+				$alarms = $row['alarms'];
+				$alerts = $row['alerts'];
+				$bcolor = getColor($alarms, $alerts);
             ?>
             <tr>
                 <!-- FETCHING DATA FROM EACH
@@ -144,10 +174,13 @@ $mysqli->close();
                 <td><?php echo $rows['distance'];?></td>
                 <td><?php echo $rows['voltage'];?></td>
                 <td><?php echo $rows['temp'];?></td>
+				<td><?php echo $rows['alarms'];?></td>
+				<td><?php echo $rows['alerts'];?></td>
                 <script>
                     console.log(<?= json_encode($bname); ?>);
                 </script>
-                <td><button id=<?php echo $bname?> class="float-left submit-button">Status</button><td>
+                <td><button id=<?php echo $bname?> 
+					class="float-left submit-button checked-0<?php echo $bcolor; ?>">Status</button><td>
             </tr>
             <?php
                 }
@@ -165,10 +198,6 @@ $mysqli->close();
                         };
                 </script>
     </section>
-	<button id="Add" class="float-left submit-button">Add Vehicle</button>
-	<button id="Alarms" class="float-left submit-button">Alarms</button>
-	<button id="Alerts" class="float-left submit-button">Alerts</button>
-	
 </body>
 
 </html>

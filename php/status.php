@@ -22,8 +22,8 @@ if ($mysqli->connect_error) {
 }
  
 // SQL query to select data from database
-if (isset($_GET['vechile'])) {
-	$param = $_GET['vechile'];
+if (isset($_GET['vehicle'])) {
+	$param = $_GET['vehicle'];
 	$sql = " SELECT r.v_id, r.last_reading, TIMESTAMPDIFF(MINUTE,NOW() - INTERVAL 72 HOUR, r.last_reading) as t_diff, 
 	r.chan_value as volts, r2.chan_value as temp
 	FROM readings r
@@ -121,4 +121,3 @@ $mysqli->close();
 </body>
  
 </html>
-

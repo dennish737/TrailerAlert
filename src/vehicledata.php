@@ -61,18 +61,17 @@ if (isset($_GET['vehicle'])) {
 }
 $result = $mysqli->query($sql);
 
-//$data = [];
+// $data = [];
 
-//foreach ($result as $row) {
+// foreach ($result as $row) {
 //    $data[] = $row;
-//}
+// }
 	
-
 echo "<table>";
 echo "<tr>";
 echo "<th>V_ID</th>";
 echo "<th>Reading Time (UTC)</th>";
-// echo "<th>Time Diff since start</th>";
+// echo "<th>Time Diff</th>";
 echo "<th>Volts</th>";
 echo "<th>Temperature</th>";
 echo "</tr>";
@@ -80,7 +79,7 @@ while($row=$result->fetch_assoc()){
   echo "<tr>";
   echo "<td>" . $row['v_id'] . "</td>";
   echo "<td>" . $row['last_reading'] . "</td>";
-  // echo "<td>" . $row['t_diff'] . "</td>";
+  //echo "<td>" . $row['t_diff'] . "</td>";
   echo "<td>" . $row['volts'] . "</td>";
   echo "<td>" . $row['temp'] . "</td>";
   echo "</tr>";
@@ -91,6 +90,3 @@ $mysqli->close();
 ?>
 </body>
 </html>
-
-
-
