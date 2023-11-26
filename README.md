@@ -23,3 +23,12 @@ Each of the major application are executed from crontab via a shell script.
 There is one shell script for each of the application
 
 The php pages provide a dashboard allowing SnoDEM to monitor and track the MITRU Trailers.
+
+# Instilation
+
+1. Clone the repository
+2. Copy content of php directory to /var/www/trailers
+3. Copy content of html directory into /var/www/trailers
+4. Copy lib and js directories to /var/www/trailers
+5. Create DB mitru and install schema
+6. 
