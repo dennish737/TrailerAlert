@@ -47,46 +47,40 @@ $rs = $dbo->query($sql);
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Alerts Alarms</title>
-    <!-- CSS FOR STYLING THE PAGE -->
-    <style>
-        table {
-            margin: 0 auto;
-            font-size: large;
-            border: 1px solid black;
-        }
+  <meta charset="UTF-8">
+  <title>MITRU Information</title>
+  <meta name="description" content="website description" />
+  <meta name="keywords" content="website keywords, website keywords" />
+  <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+  <!-- CSS FOR STYLING THE PAGE  -->
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script type="text/javascrpt" src=js/alarms.js></script>
 
-        h1 {
-            text-align: center;
-            color: #006600;
-            font-size: xx-large;
-            font-family: 'Gill Sans', 'Gill Sans MT',
-            ' Calibri', 'Trebuchet MS', 'sans-serif';
-        }
-
-        td {
-            background-color: #E4F5D4;
-            border: 1px solid black;
-        }
-
-        th,
-        td {
-            font-weight: bold;
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-        }
-
-        td {
-            font-weight: lighter;
-        }
-    </style>
 </head>
 
 <body>
-    <section>
-        <h1>Alerts and Alarms</h1>
+  <div id="main">
+    <div id="header">
+      <div id="logo">
+        <!-- class="logo_colour", allows you to change the colour of the text -->
+        <h1><a href="index.php">SnoDEM<span class="logo_colour">_MITRU</span></a></h1>
+        <h2>Alerts and Alarms</h2>
+      </div>
+
+      <div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="index.php">Home</a></li>
+          <li><a href="vehicles.php">Vehicles</a></li>
+          <li class="selected"><a href="alertsandalarms.php">Alerts and Alarms</a></li>
+          <li><a href="rules.php">Rules</a></li>
+          <li><a href="contacts.php">Alert/Alarm Contacts</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+     </div>
+   </div>
+    <div id="site_content">
+      <div id="content">
         <!-- TABLE CONSTRUCTION -->
         <table>
             <tr>
@@ -127,11 +121,17 @@ $rs = $dbo->query($sql);
                 }
             ?>
         </table>
-
-    </section>
-<?php   $dbo=null; ?>
+        <?php   $dbo=null; ?>
+     </div>
+    </div>
+    <div id="footer">
+      <p><a href="index.html">Home</a> | <a href="vehicles.php">Vehicles</a> | <a href="alertsandalarms.php">Alerts and Alarms</a>
+      | <a href="rules.php">Rules</a>
+      | <a href="contacts.php">Alert/Alarm Contacts</a> | <a href="contact.html">Contact Us</a></p>
+      <p>Copyright &copy; Snohomish County Department of Emergency Management </p>
+    </div>
+  <div>
 </body>
-
 </html>
 
 

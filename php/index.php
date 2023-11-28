@@ -16,6 +16,18 @@ function getDistanceBetweenPointsNew($latitude1, $longitude1, $latitude2, $longi
   return (round($distance,2));
 }
 
+function getColor($alarms, $alerts) {
+	$color_value = 0;
+	if ( $alarms > 0 ){
+			$color_value = 2;
+	}
+	elseif ($alerts > 0) {
+			$color_value = 1;
+	}
+
+	return $color_value;
+}
+
 // Username is wa7dem
 $user = 'wa7dem';
 $password = 'SnoDEM720';
@@ -62,6 +74,11 @@ SELECT dl.v_id, v.name, v.status, dl.last_reading, ABS(TIMESTAMPDIFF(MINUTE, UTC
 $result = $mysqli->query($sql);
 $mysqli->close();
 ?>
+
+<!-- HTML code to display data in tabular format -->
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>MITRU Information</title>
@@ -70,6 +87,14 @@ $mysqli->close();
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <!-- CSS FOR STYLING THE PAGE  -->
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <!-- <script type="text/javascript" src=js/clicked_vehicle.js></script> -->
+  <script type="text/javascript">
+	 function clicked_charts(elem) {
+      var data= elem.value;
+      location.href = "vehicle_charts.html?vehicle=" + data;
+    }   
+  </script>
+
 </head>
 
 <body>
@@ -85,9 +110,9 @@ $mysqli->close();
         <ul id="menu">
           <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
           <li class="selected"><a href="index.php">Home</a></li>
-          <li><a href="page1.html">Page1</a></li>
-          <li><a href="page2.html">Page2</a></li>
-          <li><a href="page3.html">Page3</a></li>
+          <li><a href="vehicles.php">Vehicles</a></li>
+          <li><a href="alertsandalarms.php">Alerts and Alarms</a></li>
+          <li><a href="rules.php">Rules</a></li>
           <li><a href="contacts.php">Alert/Alarm Contacts</a></li>
           <li><a href="contact.html">Contact Us</a></li>
         </ul>
@@ -117,19 +142,20 @@ $mysqli->close();
                 
                 while($rows=$result->fetch_assoc())
                 {
-                $bname = 'button'.$rows['v_id'];
+                $bname =  $rows['v_id'];
                 $alarms = $row['alarm'];
                 $alerts = $row['alerts'];
                 $bcolor = getColor($alarms, $alerts);
+                $vname = $row['name'];
             ?>
             <tr>
                 <!-- FETCHING DATA FROM EACH
                     ROW OF EVERY COLUMN -->
                 <!-- <td><?php echo $rows['name'];?></td> -->
-                <td><button id=<?php echo $bname?> 
-					   class="float-left submit-button checked-0<?php echo $bcolor; ?>"><?php echo $rows['name'];?>
-					   </button></td>
-					 
+                <td><input onclick="clicked_vehicle(this)" type="button" 
+                    value =<php $bname] ?> name=<?php $vname ?>>
+                    </td>
+
                 <td><?php echo $rows['status'];?></td>
                 <td><?php echo $rows['last_reading'];?></td>
                 <td><?php echo $rows['t_diff'];?></td>
@@ -144,21 +170,12 @@ $mysqli->close();
                 }
             ?>
         </table>
-        <script type="text/javascript">
-               document.getElementById("button1").onclick = function () {
-                  location.href = "vehicle_charts.html?vehicle=1";
-               };
-               document.getElementById("button2").onclick = function () {
-                  location.href = "vehicle_charts.html?vehicle=2";
-               };
-               document.getElementById("button3").onclick = function () {
-                  location.href = "vehicle_charts.html?vehicle=3";
-               };
-       </script>        
+
      </div>
     </div>
     <div id="footer">    
-      <p><a href="index.html">Home</a> | <a href="page1.html">Page1</a> | <a href="page2.html">Page2</a> | <a href="page3.html">Page3</a> 
+      <p><a href="index.html">Home</a> | <a href="vehicles.php">Vehicles</a> | <a href="alertsandalarms.php">Alerts and Alarms</a>
+      | <a href="rules.php">Rules</a>
       | <a href="contacts.php">Alert/Alarm Contacts</a> | <a href="contact.html">Contact Us</a></p>
       <p>Copyright &copy; Snohomish County Department of Emergency Management </p>
     </div>

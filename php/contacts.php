@@ -97,6 +97,26 @@ $rs = $dbo->query($sql);
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <!-- <script type="text/javascript" src="js/contacts.js"></script> -->
+  <script type="text/javascript">
+  function edit_contact(elem){
+    var data= elem.value;
+    //console.log(data);
+    //alert('This alert box was called with the id click event =' + data);
+    location.href = "edit_contact.php?contact=" + data;   
+  }
+
+  function add_contact(){
+    //console.log(data);
+    //alert('This alert box was called with the add click event');
+    location.href = "add_contact.php";
+  }
+
+  function delete_contact (elem) {
+
+  }  
+  </script>
+  
 </head>
 
 <body>
@@ -113,25 +133,27 @@ $rs = $dbo->query($sql);
         <ul id="menu">
           <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
           <li><a href="index.php">Home</a></li>
-          <li><a href="page1.html">Page1</a></li>
-          <li><a href="page2.html">Page2</a></li>
-          <li><a href="page3.html">Page3</a></li>
-		    <li class="selected"><a href="contacts.php">Alert and Alarm Contacts</a></li>
+          <li><a href="vehicles.php">Vehicles</a></li>
+          <li><a href="alertsandalarms.php">Alerts and Alarms</a></li>
+          <li><a href="rules.php">Rules</a></li>
+	  <li class="selected"><a href="contacts.php">Alert and Alarm Contacts</a></li>
           <li> <a href="contact.html">Contact Us</a></li>
         </ul>
       </div>
     </div>
     <div id="site_content">
       <div id="content">
-        <h1>Contacts</h1>
+        <h1>Contacts for Alerts and Alarms</h1>
         <!-- TABLE CONSTRUCTION -->
         <table>
+            <!-- Construct TABLE header -->
             <tr>
                         <!-- PHP CODE TO FETCH COLUMN NAMES -->
                         <?php
                             for ( $i = 0; $i < $rs->columnCount(); $i++)
                                 {
                                         $col = $rs->getColumnMeta($i);
+                                        
                                         if( $col['name'] == 'vehicles')
                                         {
                                                 $columns[] = $col['name'];
@@ -161,7 +183,23 @@ $rs = $dbo->query($sql);
                         <?php
                            for ( $i = 0; $i < count($columns); $i++)
                            {
-                                if( $columns[$i] == 'vehicles')
+										  if( $columns[$i] == 'id')
+										  {
+										  	  //$vid = getColVal($rows,$columns[$i]);
+										  	  $vid = $rows['id'];
+										  	  //echo "<input type='button' name='". getColVal($rows,$columns[$i]) . "' value='". getColVal($rows,$columns[$i]) . "' onclick= 'edit_contact(this)' >" ;
+										  	  //echo "<td>" . getColVal($rows,$columns[$i]) . "</td>";
+										  	  echo "<td> " ;
+										  	  echo "<input type=button";
+										  	  echo "  onclick='edit_contact(this)'";
+										  	  echo "  name='" . $vid . "'";
+										  	  echo "  value='" .$vid . "'>";
+										  	  
+										  	  //echo $vid ;
+										  	  echo "</td>";
+
+										  }
+                                elseif( $columns[$i] == 'vehicles')
                                 {
                                     $vlist = vehicle_list($rows[$columns[$i]]);
                                     foreach($vlist as $v)
@@ -181,6 +219,11 @@ $rs = $dbo->query($sql);
                     $rownumber = $rownumber + 1;
                 }
             ?>
+            <tr>
+              <td>
+                 <input type="button" name="add" value="add" onclick= "add_contact();" >  
+              </td>
+            </tr>
         </table>
 		</div>
 		</div>    

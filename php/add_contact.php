@@ -61,19 +61,41 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {  //Fetch Variables
 
 ?>
 
+<!-- HTML code to display data in tabular format -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport"
+  <meta charset="UTF-8">
+  <title>Edit Rule</title>
+  <meta name="description" content="website description" />
+  <meta name="keywords" content="website keywords, website keywords" />
+  <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+  <!-- CSS FOR STYLING THE PAGE  -->
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <!-- <script type="text/javascrpt" src=js/vehicles.js></script> -->
+  <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <link rel="stylesheet" href="css/style.css">
-        <title>Add Contact</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-        <div class="container">
+  <div id="main">
+    <div id="header">
+      <div id="logo">
+        <!-- class="logo_colour", allows you to change the colour of the text -->
+        <h1><a href="index.php">SnoDEM<span class="logo_colour">_MITRU</span></a></h1>
+        <h2>Add Vehicle</h2>
+      </div>
+    <div id="menubar">
+      <div id="menu">
+        <!-- insert menu items here -->
+      </div>
+   </div>
+   <div id="site_content">
+     <div id="content">
+     <div class="container">
           <h1>Add Contact Information</h1>
 
     <form action="" method="POST" class="main-form">
@@ -118,12 +140,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {  //Fetch Variables
                 <input type="hidden" name="White" value="0" />
                 <input type="checkbox" id="White" name="White" value=1>White</input><br>
           </div>
-        <input type="submit" class="gt_button value="submit" name="submit">
+        <input type="submit" class="gt_button value=submit" name="submit">
+        <input type="submit" calss="gt_button value=cancel" name="cancel">
         <div class="form-status">
         <?php echo $status ?>
     </div>
         </form>
         <br>
+
+     </div>
+   </div>
+   <div id="footer">
+      <p><a href="index.html">Home</a> | <a href="vehicles.php">Vehicles</a> | <a href="alertsandalarms.php">Alerts and Alarms</a>
+      | <a href="rules.php">Rules</a>
+      | <a href="contacts.php">Alert/Alarm Contacts</a> | <a href="contact.html">Contact Us</a></p>
+      <p>Copyright &copy; Snohomish County Department of Emergency Management </p>
+   </div>
+ </div>
 </body>
 </html>
 
