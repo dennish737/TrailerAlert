@@ -5,6 +5,7 @@
 <!-- HTML code to display data in tabular format -->
 <!DOCTYPE html>
 <html lang="en">
+<!-- HTML code to display data in tabular format -->
 
 <head>
   <meta charset="UTF-8">
@@ -26,8 +27,15 @@
         <h2>Add Vehicle</h2>
       </div>
     <div id="menubar">
-      <div id="menu">
-        <!-- insert menu items here -->
+			<ul id="menu">    
+			 <li><a href="index.php">Home</a></li>
+            <li><a href="vehicles.php">Vehicles</a></li>
+            <li><a href="alertsandalarms.php">Alerts and Alarms</a></li>
+            <li><a href="rules.php">Rules</a></li>
+            <li><a href="contacts.php">Alert/Alarm Contacts</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+         </ul> 
+              
       </div>
    </div>
    <div id="site_content">

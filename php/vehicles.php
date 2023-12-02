@@ -1,4 +1,3 @@
-<!-- PHP code to establish connection with the localserver -->
 <?php
 
 // Username is wa7dem
@@ -24,29 +23,48 @@ if ($mysqli->connect_error) {
 // SQL query to select data from database
 $sql = "SELECT id, name, vid, status, base, 
 	ST_Y(base_loc) as latitude, ST_X(base_loc) as longitude,
-	CASE WHEN info_enable = TRUE THEN 'ON' ELSE 'Off' END AS info_enable,
-	CASE WHEN alert_enable = TRUE THEN 'ON' ELSE 'Off' END AS alert_enable,
-	CASE WHEN alarm_enable = TRUE THEN 'ON' ELSE 'Off' END AS alarm_enable	
+	CASE WHEN info_enabled = TRUE THEN 'ON' ELSE 'Off' END AS info_enable,
+	CASE WHEN alert_enabled = TRUE THEN 'ON' ELSE 'Off' END AS alert_enable,
+	CASE WHEN alarm_enabled = TRUE THEN 'ON' ELSE 'Off' END AS alarm_enable	
 FROM vehicles;";
 
 $result = $mysqli->query($sql);
 $mysqli->close();
 ?>
 
-<!-- HTML code to display data in tabular format -->
 <!DOCTYPE html>
 <html lang="en">
+<!-- HTML code to display data in tabular format -->
 
 <head>
   <meta charset="UTF-8">
-  <title>MITRU Information</title>
+  <title>MITRU Vehicles</title>
   <meta name="description" content="website description" />
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <!-- CSS FOR STYLING THE PAGE  -->
   <link rel="stylesheet" type="text/css" href="css/style.css" />
-  <script type="text/javascript" src="js/vehicles.js"></script>
-  
+  <!-- <script type="text/javascript" src="js/vehicles.js"></script> -->
+  <script type="text/javascript">
+   // vehicle update scripts
+  function edit_vehicle(elem){
+    var data= elem.name;
+    //console.log(data);
+    //alert('This alert box was called with the id click event =' + data);
+    location.href = "edit_vehicle.php?vehicle=" + data;   
+  }
+
+  function add_vehicle(){
+    // location.href = "add_vehicle.php";
+    //console.log(data);
+    //alert('This alert box was called with the add click event');
+    location.href = "add_vehicle.php";
+  }
+
+  function delete_delete (elem) {
+
+  }
+  </script>
 
 </head>
 
@@ -74,9 +92,10 @@ $mysqli->close();
     <div id="site_content">
       <div id="content">
         <!-- TABLE CONSTRUCTION -->
+        <!-- TABLE CONSTRUCTION -->
         <table>
             <tr>
-			   <th>id</th>
+			   <th>    </th>
             <th>Name</th>
             <th>APRS Name</th>
 				<th>Status</th>
@@ -88,21 +107,21 @@ $mysqli->close();
 				<th>Alarm Messages</th>				
             </tr>
             <!-- PHP CODE TO FETCH DATA FROM ROWS -->
-			 <?php
+			   <?php
 
                 // LOOP TILL END OF DATA
                 while($rows=$result->fetch_assoc())
                 {
                 	 $bname =  $rows['id'];
-                   $vname = $row['name'];
+                   $vname = "Edit";
             ?>
             <tr>
                 <!-- FETCHING DATA FROM EACH
                     ROW OF EVERY COLUMN -->
             <!-- <?php echo $rows['id'];?></td> -->
 				<td>
-				   <input type="button" value=<?php echo $rows['id'];?> name=<?php echo $rows['name'];?>
-				   onclick=  "edit_vehicle(this);" >      
+				   <input type="button" value=<?php echo $vname;?> name=<?php echo $bname;?>
+				   onclick=  "edit_vehicle(this)" >      
 				</td>
             <td><?php echo $rows['name'];?></td>
 				<td><?php echo $rows['vid'];?></td>
@@ -118,11 +137,15 @@ $mysqli->close();
             <?php
                 }
             ?>
+            
+				<tr>
 				<td>           
-				   <input type="button" name="add" value="add" onclick= "add_vehicle();" > 
+				   <input type="button" name="add" value="add" onclick= "add_vehicle()" > 
 				</td>
+				</tr>
 				  
         </table>
+
 
      </div>
     </div>

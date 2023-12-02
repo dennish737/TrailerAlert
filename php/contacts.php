@@ -154,16 +154,27 @@ $rs = $dbo->query($sql);
                                 {
                                         $col = $rs->getColumnMeta($i);
                                         
-                                        if( $col['name'] == 'vehicles')
+                                        if( $col['name'] == 'id')
+                                        {
+                                        //{ 
+                                            $columns[] = $col['name'];
+                                            $loc_name = $col['name'];
+                                            //echo "<th>" . $loc_name . "</th>";  
+                                            echo "<th>" . "    " . "</th>"; 
+                                        //    $columns[] = $col['name'];
+                                        //    echo "<th>" . $col['name'] . "</th>";                                                                             	
+                                        }                                        
+                                        elseif( $col['name'] == 'vehicles')
                                         {
                                                 $columns[] = $col['name'];
                                                 // Add columns for vehicles
                                                 echo "<th>Black</th>";
                                                 echo "<th>Gray</th>";
                                                 echo "<th>White</th>";
-                                        } else {
-                                        $columns[] = $col['name'];
-                                        echo "<th>" . $col['name'] . "</th>";
+                                        } 
+                                        else {
+                                           $columns[] = $col['name'];
+                                           echo "<th>" . $col['name'] . "</th>";
                                         }
                             }
                             echo "<th>Delete?</th>";
@@ -187,13 +198,14 @@ $rs = $dbo->query($sql);
 										  {
 										  	  //$vid = getColVal($rows,$columns[$i]);
 										  	  $vid = $rows['id'];
+										  	  $in_value = "Edit";
 										  	  //echo "<input type='button' name='". getColVal($rows,$columns[$i]) . "' value='". getColVal($rows,$columns[$i]) . "' onclick= 'edit_contact(this)' >" ;
 										  	  //echo "<td>" . getColVal($rows,$columns[$i]) . "</td>";
 										  	  echo "<td> " ;
 										  	  echo "<input type=button";
 										  	  echo "  onclick='edit_contact(this)'";
 										  	  echo "  name='" . $vid . "'";
-										  	  echo "  value='" .$vid . "'>";
+										  	  echo "  value='" .$in_value . "'>";
 										  	  
 										  	  //echo $vid ;
 										  	  echo "</td>";

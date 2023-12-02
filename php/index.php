@@ -89,8 +89,9 @@ $mysqli->close();
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <!-- <script type="text/javascript" src=js/clicked_vehicle.js></script> -->
   <script type="text/javascript">
-	 function clicked_charts(elem) {
-      var data= elem.value;
+	 function clicked_vehicle(elem) {
+      var data= elem.name;
+      //alert('This alert box, for clicked_charts, was called with the id =' + data);
       location.href = "vehicle_charts.html?vehicle=" + data;
     }   
   </script>
@@ -143,17 +144,17 @@ $mysqli->close();
                 while($rows=$result->fetch_assoc())
                 {
                 $bname =  $rows['v_id'];
-                $alarms = $row['alarm'];
-                $alerts = $row['alerts'];
-                $bcolor = getColor($alarms, $alerts);
-                $vname = $row['name'];
+                $alarms = $rows['alarm'];
+                $alerts = $rows['alerts'];
+                //$bcolor = getColor($alarms, $alerts);
+                $vname = $rows['name'];
             ?>
             <tr>
                 <!-- FETCHING DATA FROM EACH
                     ROW OF EVERY COLUMN -->
                 <!-- <td><?php echo $rows['name'];?></td> -->
-                <td><input onclick="clicked_vehicle(this)" type="button" 
-                    value =<php $bname] ?> name=<?php $vname ?>>
+                <td><input onclick='clicked_vehicle(this)' type="button" 
+                    value=<?php echo $vname;?> name=<?php echo $bname;?> >
                     </td>
 
                 <td><?php echo $rows['status'];?></td>

@@ -14,7 +14,7 @@ def dbconnect(username, password):
         connection = database.connect(
                 user=username,
                 password=password,
-                host='10.0.12.45',
+                host='localhost',
                 port=3306,
                 database="mitru"
         )
@@ -103,17 +103,22 @@ def get_location_changes(connection, v_id):
         loc1 = (locations.iloc[1]['latitude'], locations.iloc[1]['longitude'])
         loc2 = (locations.iloc[0]['latitude'], locations.iloc[0]['longitude'])
         d_move = utils.distance(loc1, loc2)
-        changes['distance_moved'] = d_move if d_move > 50.0 else 0.0
+        if d_move > 50:
+            changes['distance_moved'] = d_move
+            #changes['speed'] = d_move/changes['poling_time']
+        else:
+            changes['distance_moved'] = 0.0
+            #changes['speed'] = 0.0
         d_alt = locations.iloc[0]['altitude_m'] - locations.iloc[1]['altitude_m']
         changes['alt_change'] = d_alt if d_alt > 15.0 else 0.0
 
     return changes
 
 def update_locations(connection, row):
-    """ update the location information in hte data base.
+    """ update the location information in the database.
         This is done by inserting a row in the location table.
-        Before inserting the row, we wantto check that the location
-        'last _reading' value has changed has changed. We  will
+        Before inserting the row, we want to check that the location
+        'last _reading' value has changed. We  will
         do that by getting the last location reading and comparing the last_reading
         value"""
 

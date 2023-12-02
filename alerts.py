@@ -25,31 +25,31 @@ smtp = "smtp-mail.outlook.com"
 port = 587
 
 def send_alert(sms_gateway, subject, message):
-    #print("send to: ", sms_gateway)
-    #print("subject: ", subject)
-    #print("message: ", message)
+    print("send to: ", sms_gateway)
+    print("subject: ", subject)
+    print("message: ", message)
 
-	# This will start our email server
-	server = smtplib.SMTP(smtp,port)
-	# Starting the server
-	server.starttls()
-	# Now we need to login
-	server.login(email,pas)
+    # This will start our email server
+    server = smtplib.SMTP(smtp,port)
+    # Starting the server
+    server.starttls()
+    # Now we need to login
+    server.login(email,pas)
 
-	# Now we use the MIME module to structure our message.
-	msg = MIMEMultipart()
-	msg['From'] = email
-	msg['To'] = sms_gateway
-	# Make sure you add a new line in the subject
-	msg['Subject'] = subject
-	# Make sure you also add new lines to your body
-	body = message
-	# and then attach that body furthermore you can also send html content.
-	msg.attach(MIMEText(body, 'plain'))
+    # Now we use the MIME module to structure our message.
+    msg = MIMEMultipart()
+    msg['From'] = email
+    msg['To'] = sms_gateway
+    # Make sure you add a new line in the subject
+    msg['Subject'] = subject
+    # Make sure you also add new lines to your body
+    body = message
+    # and then attach that body furthermore you can also send html content.
+    msg.attach(MIMEText(body, 'plain'))
 
-	sms = msg.as_string()
+    sms = msg.as_string()
 
-	server.sendmail(email,sms_gateway,sms)
+    server.sendmail(email,sms_gateway,sms)
 
 
 def format_provider_email_address(contact):
@@ -87,8 +87,8 @@ if __name__ == '__main__':
             for idx, contact in contacts.iterrows():
                 provider = format_provider_email_address(contact)
                 #sms_gateways.append(provider)
-				#receivers = ';'.join(sms_gateways)
-				send_alert(provider, subject, message)
+            	#receivers = ';'.join(sms_gateways)
+                send_alert(provider, subject, message)
         db.send_status(conn, message_id, timestamp)
     # now send the cleared messages
     if send_cleared_messages:
@@ -102,14 +102,14 @@ if __name__ == '__main__':
             severity = row['severity']
             message = row['message']
             message += " cleared"
-            subject = f"{v_name} {severity} rule {rule_id}  Message_id:{message_id} cleared"
+            subject = f"{v_name} {severity} rule {rule_id}  Message_id:{message_id} clear"
             contacts = db.get_contacts(conn, severity, v_id)
             if not contacts.empty:
                 #sms_gateways = []
                 for idx, contact in contacts.iterrows():
                     provider = format_provider_email_address(contact)
                     #sms_gateways.append(sms_gateways)
-					#receivers = ';'.join(sms_gateways)
-					send_alert(rrovider, subject, message)
+                    #receivers = ';'.join(sms_gateways)
+                    send_alert(provider, subject, message)
             db.clear_sent(conn, message_id)
 

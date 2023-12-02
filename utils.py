@@ -8,7 +8,6 @@ from haversine import haversine, Unit
 # Operations
 # operator functions
 def distance(loc1, loc2, units=Unit.METERS):
-    # loc1 and loc2 are tuples of lat and lon in degrees
     d = haversine(loc1, loc2, unit=units)
     return d
 
@@ -68,3 +67,27 @@ def dec2dms(deg, pretty_print=None, ndp=4):
         return '{d:d}° {m:d}′ {s:.{ndp:d}f}″ {hemi:1s}'.format(
                     d=abs(d), m=m, s=s, hemi=hemi, ndp=ndp)
     return d, m, s
+
+def mph2mpmin(speed):
+    return (speed * 26.8224)
+
+def mpmin2mph(speed):
+    return (speed/26.8224)
+
+def mph2kph(speed):
+    return (speed * 1.609344)
+
+def kph2mph(speed):
+    return (speed * 0.6213711922)
+
+
+def speed_mmin(delta_distance, delta_time):
+    # delta_distance is the distance traveled in meters
+    # delta_time is the time difference in minutes
+    speed = delta_distance/delta_time
+    return speed
+
+def delta_tm(t1,t2):
+    dt = (t2 - t1).total_seconds()  # difference in time in seconds
+    minutes = divmod(dt, 60)
+    return (minutes[0] + minutes[1]/60.0)

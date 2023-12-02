@@ -19,7 +19,6 @@ class StatusMessage:
     severity: str
     message: str
 
-
 class Vehicle:
     def __init__(self, conn, row_info):
         self.connection = conn

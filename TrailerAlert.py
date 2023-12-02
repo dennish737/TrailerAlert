@@ -25,14 +25,7 @@ the alert package to determine if a message is to be sent. Because the broadcast
  trailers is different, the 'Last Time' is used to determine if new data has arrived. If no new data 
  has arrived, no update to the database is made.
  
- In addition to scrapping the data, this tool also standardizes te data output, for consistent alarm processing.
- 
- This tool provides the following Vehicle parameters:
-     1) Time of last position
-     2) Location
-     3) Speed
-     4) Vehicle Temperature
-     5) Vehicle Battery Level
+ In addition to scrapping hte data, this tool also standardizes the data output, for consistent alarm processing.
  """
 
 

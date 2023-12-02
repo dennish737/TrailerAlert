@@ -1,5 +1,32 @@
 <?php
+// Username is wa7dem
+$user = 'wa7dem';
+$password = 'SnoDEM720';
 
+// Database name is mitru
+$database = 'mitru';
+
+// Server is localhost with
+// port number 3306
+$servername='localhost:3306';
+$mysqli = new mysqli($servername, $user,
+                $password, $database);
+
+// Checking for connections
+if ($mysqli->connect_error) {
+    echo '<script type="text/javascript"> 
+            alert(" DB Connection failed");
+         </script>';
+}
+
+//$sql=" SELECT id, v_id, enabled, rule_name, rule_class, rule_function FROM rules;";
+$sql="SELECT r.id, v.name as vehicle, r.rule_name, r.rule_class, r.rule_function FROM rules r
+      INNER JOIN vehicles v
+      ON v.id = r.v_id
+      ;";
+
+$result = $mysqli->query($sql);
+$mysqli->close();
 ?>
 
 <!-- HTML code to display data in tabular format -->
@@ -14,7 +41,26 @@
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <!-- CSS FOR STYLING THE PAGE  -->
   <link rel="stylesheet" type="text/css" href="css/style.css" />
-  <script type="text/javascrpt" src=js/rules.js></script>
+  <script type="text/javascript">
+  // rule update functions
+
+  function edit_rule(elem){
+    var data= elem.name;
+    //console.log(data);
+    //alert('This alert box was called with the id click event =' + data);
+    location.href = "edit_rule.php?rule=" + data;   
+  }
+
+  function add_rule(){
+    //console.log(data);
+    //alert('This alert box was called with the add click event');
+    location.href = "add_rule.php";
+  }
+
+  function delete_rule(elem) {
+
+  }
+  </script>
 
 </head>
 
@@ -42,6 +88,47 @@
    <div id="site_content">
      <div id="content">
      <!-- insert content here -->
+        <table>
+            <tr>
+                <th>    </th>
+                <!-- <th>enabled</th> -->
+                <<th>rule_name</th>
+                <th>vehicle</th>
+                <th>rule_class</th>
+                <th>rule_function</th>
+                <!-- <th>Status</th> -->
+            </tr>
+            <!-- PHP CODE TO FETCH DATA FROM ROWS -->
+            <?php
+
+                // LOOP TILL END OF DATA
+                
+                while($rows=$result->fetch_assoc())
+                {
+                $bname =  $rows['id'];
+                //$vname = $rows['rule_name'];
+                $vname = "Edit";
+            ?>       
+                <td><input  onclick='edit_rule(this)' type="button" width="fit-content" 
+                    value=<?php echo $vname;?> name=<?php echo $bname;?> />
+                    </td> 
+                <td><?php echo $rows['rule_name'];?></td>  
+                <td><?php echo $rows['vehicle'];?></td>
+                <!-- <td><?php echo $rows['enabled'];?></td> -->
+                
+                <td><?php echo $rows['rule_class'];?></td>
+                <td><?php echo $rows['rule_function'];?></td>
+               
+            </tr>
+            <?php
+                }
+            ?>                 
+				<tr>
+				<td>           
+				   <input type="button" name="add" value="add" onclick= "add_rule()" > 
+				</td>
+				</tr>
+        </table>
      </div>
    </div>
    <div id="footer">
