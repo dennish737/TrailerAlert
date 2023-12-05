@@ -97,6 +97,7 @@ $rs = $dbo->query($sql);
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- <script type="text/javascript" src="js/contacts.js"></script> -->
   <script type="text/javascript">
   function edit_contact(elem){
@@ -150,6 +151,7 @@ $rs = $dbo->query($sql);
             <tr>
                         <!-- PHP CODE TO FETCH COLUMN NAMES -->
                         <?php
+                            
                             for ( $i = 0; $i < $rs->columnCount(); $i++)
                                 {
                                         $col = $rs->getColumnMeta($i);
@@ -160,9 +162,8 @@ $rs = $dbo->query($sql);
                                             $columns[] = $col['name'];
                                             $loc_name = $col['name'];
                                             //echo "<th>" . $loc_name . "</th>";  
-                                            echo "<th>" . "    " . "</th>"; 
-                                        //    $columns[] = $col['name'];
-                                        //    echo "<th>" . $col['name'] . "</th>";                                                                             	
+                                            //echo "<th>" . "    " . "</th>"; 
+                                           echo "<th>" . $col['name'] . "</th>";                                                                             	
                                         }                                        
                                         elseif( $col['name'] == 'vehicles')
                                         {
@@ -177,7 +178,7 @@ $rs = $dbo->query($sql);
                                            echo "<th>" . $col['name'] . "</th>";
                                         }
                             }
-                            echo "<th>Delete?</th>";
+                            echo "<th>    </th>";
                         ?>
             </tr>
             <!-- PHP CODE TO FETCH DATA FROM ROWS -->
@@ -192,26 +193,10 @@ $rs = $dbo->query($sql);
                 <!-- FETCHING DATA FROM EACH
                     ROW OF EVERY COLUMN -->
                         <?php
+                           
                            for ( $i = 0; $i < count($columns); $i++)
                            {
-										  if( $columns[$i] == 'id')
-										  {
-										  	  //$vid = getColVal($rows,$columns[$i]);
-										  	  $vid = $rows['id'];
-										  	  $in_value = "Edit";
-										  	  //echo "<input type='button' name='". getColVal($rows,$columns[$i]) . "' value='". getColVal($rows,$columns[$i]) . "' onclick= 'edit_contact(this)' >" ;
-										  	  //echo "<td>" . getColVal($rows,$columns[$i]) . "</td>";
-										  	  echo "<td> " ;
-										  	  echo "<input type=button";
-										  	  echo "  onclick='edit_contact(this)'";
-										  	  echo "  name='" . $vid . "'";
-										  	  echo "  value='" .$in_value . "'>";
-										  	  
-										  	  //echo $vid ;
-										  	  echo "</td>";
-
-										  }
-                                elseif( $columns[$i] == 'vehicles')
+                                if( $columns[$i] == 'vehicles')
                                 {
                                     $vlist = vehicle_list($rows[$columns[$i]]);
                                     foreach($vlist as $v)
@@ -222,9 +207,16 @@ $rs = $dbo->query($sql);
                                     echo "<td>" . getColVal($rows,$columns[$i]) . "</td>";
                                 }
                             }
-                            echo "<td><input type='checkbox' name='checkbox[" . $rownumber . "]' value='". $rows['id'] . "'</td>";
-
+                            
                                 ?>
+            	<td>                 
+                	<a href="edit_contact.php?id=<?php echo $rows['id']; ?> " class="mr-3" title="Update Record" data-toggle="tooltip">
+                  	 <span class="fa fa-pencil"></span>
+                	</a>
+                	<a href="delete_contact.php?id=<?php echo $rows['id']; ?>" title="Delete Record" data-toggle="tooltip">
+                  	 <span class="fa fa-trash"></span>
+                	</a>
+            </td>
 
             </tr>
             <?php

@@ -5,10 +5,11 @@
 <!-- HTML code to display data in tabular format -->
 <!DOCTYPE html>
 <html lang="en">
+<!-- HTML code to display data in tabular format -->
 
 <head>
   <meta charset="UTF-8">
-  <title>Edit Vehicle</title>
+  <title>Delete Contact</title>
   <meta name="description" content="website description" />
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
@@ -23,11 +24,17 @@
       <div id="logo">
         <!-- class="logo_colour", allows you to change the colour of the text -->
         <h1><a href="index.php">SnoDEM<span class="logo_colour">_MITRU</span></a></h1>
-        <h2>Edit Vehicle</h2>
+        <h2>Delete Vehicle</h2>
       </div>
     <div id="menubar">
-      <div id="menu">
-        <!-- insert menu items here -->
+			<ul id="menu">
+			 <li><a href="index.php">Home</a></li>
+            <li><a href="vehicles.php">Vehicles</a></li>
+            <li class="selected"><a href="add_vehicle.php">New Vehicles</a></li>
+            <li><a href="vehicle_types.php">Vehicle Types</a></li>
+            <li><a href="base_loc.php">Base Locations</a></li>
+         </ul>
+
       </div>
    </div>
    <div id="site_content">
@@ -35,9 +42,9 @@
         <!-- add content here -->
         <?php
             $parameter = $_SERVER['QUERY_STRING'];
-            echo "<h2> Edit Vehicle Not Implmented </h2>";
+            echo '<h2> Delete Not Implemented </h2>';
     			echo "<p>" . $parameter . "</p>";
-			?>    
+			?>  
      </div>
    </div>
    <div id="footer">

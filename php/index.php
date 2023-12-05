@@ -28,25 +28,9 @@ function getColor($alarms, $alerts) {
 	return $color_value;
 }
 
-// Username is wa7dem
-$user = 'wa7dem';
-$password = 'SnoDEM720';
+require_once('dbconfig.php');
 
-// Database name is mitru
-$database = 'mitru';
 
-// Server is localhost with
-// port number 3306
-$servername='localhost:3306';
-$mysqli = new mysqli($servername, $user,
-                $password, $database);
-
-// Checking for connections
-if ($mysqli->connect_error) {
-    die('Connect Error (' .
-    $mysqli->connect_errno . ') '.
-    $mysqli->connect_error);
-}
 
 // SQL query to select data from database
 $sql = " WITH chan_readings (v_id, last_reading, voltage, temp) AS (
@@ -71,14 +55,14 @@ SELECT dl.v_id, v.name, v.status, dl.last_reading, ABS(TIMESTAMPDIFF(MINUTE, UTC
         INNER JOIN vehicles v
         ON dl.v_id = v.id
         ORDER BY v.name; ";
-$result = $mysqli->query($sql);
-$mysqli->close();
+$result = $conn->query($sql);
+$conn->close();
 ?>
+
 
 <!-- HTML code to display data in tabular format -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>MITRU Information</title>
@@ -87,14 +71,13 @@ $mysqli->close();
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <!-- CSS FOR STYLING THE PAGE  -->
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- <script type="text/javascript" src=js/clicked_vehicle.js></script> -->
   <script type="text/javascript">
-	 function clicked_vehicle(elem) {
-      var data= elem.name;
-      //alert('This alert box, for clicked_charts, was called with the id =' + data);
-      location.href = "vehicle_charts.html?vehicle=" + data;
-    }   
-  </script>
+     $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();
+        });
+ </script>
 
 </head>
 
@@ -129,12 +112,13 @@ $mysqli->close();
                 <th>State</th>
                 <th>Last Update</th>
                 <th>dt from Last)</th>
-                <th>Locator</th>
+                <!-- <th>Locator</th> -->
                 <th>Base Location</th>
                 <th>Distance From Base (m)</th>
                 <th>Battery Voltage</th>
                 <th>Temperature</th>
                 <!-- <th>Status</th> -->
+                <th>    </th>
             </tr>
             <!-- PHP CODE TO FETCH DATA FROM ROWS -->
             <?php
@@ -152,19 +136,31 @@ $mysqli->close();
             <tr>
                 <!-- FETCHING DATA FROM EACH
                     ROW OF EVERY COLUMN -->
-                <!-- <td><?php echo $rows['name'];?></td> -->
-                <td><input onclick='clicked_vehicle(this)' type="button" 
+                <td><?php echo $rows['name'];?></td>
+                <!-- <td><input onclick='clicked_vehicle(this)' type="button" 
                     value=<?php echo $vname;?> name=<?php echo $bname;?> >
-                    </td>
+                 </td> -->
 
                 <td><?php echo $rows['status'];?></td>
                 <td><?php echo $rows['last_reading'];?></td>
                 <td><?php echo $rows['t_diff'];?></td>
-                <td><?php echo $rows['locator'];?></td>
+                <!-- <td><?php echo $rows['locator'];?></td> -->
                 <td><?php echo $rows['base'];?></td>
                 <td><?php echo $rows['distance'];?></td>
                 <td><?php echo $rows['voltage'];?></td>
                 <td><?php echo $rows['temp'];?></td>
+                
+                
+
+                <td>                 
+                    <a href="vehicle_charts.html?vehicle=<?php echo $rows['v_id']; ?> " class="mr-3" title="View Data" data-toggle="tooltip">
+                       <span class="fa fa-eye"></span>
+                    </a>
+               
+                    <a href="alertsandalarms.php?vehicle=<?php echo $rows['v_id']; ?> " class="mr-3" title="View Alert/Alarms" data-toggle="tooltip">
+                       <span class="fa fa-eye"></span>
+                    </a>
+                </td>
                 
             </tr>
             <?php

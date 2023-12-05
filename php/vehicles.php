@@ -1,35 +1,8 @@
 <?php
+// Include configuration file
+require_once "dbconfig.php";
 
-// Username is wa7dem
-$user = 'wa7dem';
-$password = 'SnoDEM720';
 
-// Database name is mitru
-$database = 'mitru';
-
-// Server is localhost with
-// port number 3306
-$servername='localhost:3306';
-$mysqli = new mysqli($servername, $user,
-                $password, $database);
-
-// Checking for connections
-if ($mysqli->connect_error) {
-    die('Connect Error (' .
-    $mysqli->connect_errno . ') '.
-    $mysqli->connect_error);
-}
-
-// SQL query to select data from database
-$sql = "SELECT id, name, vid, status, base, 
-	ST_Y(base_loc) as latitude, ST_X(base_loc) as longitude,
-	CASE WHEN info_enabled = TRUE THEN 'ON' ELSE 'Off' END AS info_enable,
-	CASE WHEN alert_enabled = TRUE THEN 'ON' ELSE 'Off' END AS alert_enable,
-	CASE WHEN alarm_enabled = TRUE THEN 'ON' ELSE 'Off' END AS alarm_enable	
-FROM vehicles;";
-
-$result = $mysqli->query($sql);
-$mysqli->close();
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +17,7 @@ $mysqli->close();
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <!-- CSS FOR STYLING THE PAGE  -->
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- <script type="text/javascript" src="js/vehicles.js"></script> -->
   <script type="text/javascript">
    // vehicle update scripts
@@ -64,6 +38,11 @@ $mysqli->close();
   function delete_delete (elem) {
 
   }
+  </script>
+  <script>
+     $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();
+        });
   </script>
 
 </head>
@@ -91,11 +70,33 @@ $mysqli->close();
    </div>
     <div id="site_content">
       <div id="content">
-        <!-- TABLE CONSTRUCTION -->
+        <!-- query table -->
+        <?php
+				// set the sql suffix
+				$suffix = '';
+
+				if (isset($_GET['vehicle']) && !empty($_GET['vehicle'])) {
+					$suffix = ' WHERE id =' . $_GET['vehicle'] ;
+				} else {
+					$suffix = '';
+				}
+
+
+				// SQL query to select data from database
+				$sql = "SELECT id, name, vid, status, base, 
+					ST_Y(base_loc) as latitude, ST_X(base_loc) as longitude,
+					CASE WHEN info_enabled = TRUE THEN 'ON' ELSE 'Off' END AS info_enable,
+					CASE WHEN alert_enabled = TRUE THEN 'ON' ELSE 'Off' END AS alert_enable,
+					CASE WHEN alarm_enabled = TRUE THEN 'ON' ELSE 'Off' END AS alarm_enable	
+					FROM vehicles" . $suffix . ';' ;
+
+
+             $result = $conn->query($sql);
+             $conn->close();        
+        ?>
         <!-- TABLE CONSTRUCTION -->
         <table>
             <tr>
-			   <th>    </th>
             <th>Name</th>
             <th>APRS Name</th>
 				<th>Status</th>
@@ -104,7 +105,8 @@ $mysqli->close();
 				<th>Base Longitude</th>
 				<th>Info Messages</th>
 				<th>Alert Messages</th>
-				<th>Alarm Messages</th>				
+				<th>Alarm Messages</th>	
+				<th>    </th>			
             </tr>
             <!-- PHP CODE TO FETCH DATA FROM ROWS -->
 			   <?php
@@ -119,10 +121,7 @@ $mysqli->close();
                 <!-- FETCHING DATA FROM EACH
                     ROW OF EVERY COLUMN -->
             <!-- <?php echo $rows['id'];?></td> -->
-				<td>
-				   <input type="button" value=<?php echo $vname;?> name=<?php echo $bname;?>
-				   onclick=  "edit_vehicle(this)" >      
-				</td>
+
             <td><?php echo $rows['name'];?></td>
 				<td><?php echo $rows['vid'];?></td>
             <td><?php echo $rows['status'];?></td>
@@ -132,6 +131,21 @@ $mysqli->close();
             <td><?php echo $rows['info_enable'];?></td>
             <td><?php echo $rows['alert_enable'];?></td>
             <td><?php echo $rows['alarm_enable'];?></td>
+            
+            <td>                 
+                <a href="vehicle_charts.html?vehicle=<?php echo $rows['id']; ?> " class="mr-3" title="View Data" data-toggle="tooltip">
+                   <span class="fa fa-eye"></span>
+                </a>
+                <a href="vehicle_charts.html?vehicle=<?php echo $rows['id']; ?> " class="mr-3" title="View Alerts/Alarms" data-toggle="tooltip">
+                   <span class="fa fa-eye"></span>
+                </a>
+                <a href="edit_vehicle.php?vehicle=<?php echo $rows['id']; ?> " class="mr-3" title="Update Record" data-toggle="tooltip">
+                   <span class="fa fa-pencil"></span>
+                </a>
+                <a href="delete_vehicle.php?vehicle=<?php echo $rows['id']; ?>" title="Delete Record" data-toggle="tooltip">
+                   <span class="fa fa-trash"></span>
+                </a>
+            </td>
             </tr>     
                   
             <?php

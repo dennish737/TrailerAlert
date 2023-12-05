@@ -86,7 +86,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {  //Fetch Variables
       <div id="logo">
         <!-- class="logo_colour", allows you to change the colour of the text -->
         <h1><a href="index.php">SnoDEM<span class="logo_colour">_MITRU</span></a></h1>
-        <h2>Add Vehicle</h2>
+        <h2>Add New Contact</h2>
       </div>
     <div id="menubar">
       <div id="menu">
@@ -141,7 +141,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {  //Fetch Variables
                 <input type="checkbox" id="White" name="White" value=1>White</input><br>
           </div>
         <input type="submit" class="gt_button value=submit" name="submit">
-        <input type="submit" calss="gt_button value=cancel" name="cancel">
+        <button type="cancel" onclick="window.location='contacts.php';return false;">Cancel</button>
         <div class="form-status">
         <?php echo $status ?>
     </div>

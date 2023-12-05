@@ -37,6 +37,7 @@
         <!-- add content here -->
         <?php
             $parameter = $_SERVER['QUERY_STRING'];
+            echo "<h2> Edit Rule Not Implmented </h2>";
     			echo "<p>" . $parameter . "</p>";
 			?>    
      </div>
