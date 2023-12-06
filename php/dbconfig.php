@@ -3,8 +3,8 @@
 //server with default setting (user 'root' with no password) */
 
 define('DB_SERVER', 'localhost:3306');
-define('DB_USERNAME', 'wa7dem');
-define('DB_PASSWORD', 'SnoDEM720');
+define('DB_USERNAME', 'username');
+define('DB_PASSWORD', 'password');
 define('DB_NAME', 'mitru');
 
 //print "DB Open : " . 'Success! '. "<br/>";
